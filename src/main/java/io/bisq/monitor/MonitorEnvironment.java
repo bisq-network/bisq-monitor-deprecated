@@ -42,6 +42,7 @@ public class MonitorEnvironment extends BisqEnvironment {
     private String slackUrlSeedChannel = "";
     private String slackUrlBtcChannel = "";
     private String slackUrlProviderChannel = "";
+    private String port;
 
     public MonitorEnvironment(OptionSet options) {
         this(new JOptCommandLinePropertySource(BISQ_COMMANDLINE_PROPERTY_SOURCE_NAME, checkNotNull(options)));
@@ -62,6 +63,10 @@ public class MonitorEnvironment extends BisqEnvironment {
                 (String) commandLineProperties.getProperty(MonitorOptionKeys.SLACK_PROVIDER_SEED_CHANNEL) :
                 "";
 
+        port = commandLineProperties.containsProperty(MonitorOptionKeys.PORT) ?
+                (String) commandLineProperties.getProperty(MonitorOptionKeys.PORT) :
+                "80";
+
         // hack because defaultProperties() is called from constructor and slackUrlSeedChannel would be null there
         getPropertySources().remove("bisqDefaultProperties");
         getPropertySources().addLast(defaultPropertiesMonitor());
@@ -74,6 +79,7 @@ public class MonitorEnvironment extends BisqEnvironment {
                 setProperty(MonitorOptionKeys.SLACK_URL_SEED_CHANNEL, slackUrlSeedChannel);
                 setProperty(MonitorOptionKeys.SLACK_BTC_SEED_CHANNEL, slackUrlBtcChannel);
                 setProperty(MonitorOptionKeys.SLACK_PROVIDER_SEED_CHANNEL, slackUrlProviderChannel);
+                setProperty(MonitorOptionKeys.PORT, port);
 
                 setProperty(NetworkOptionKeys.SEED_NODES_KEY, seedNodes);
                 setProperty(NetworkOptionKeys.MY_ADDRESS, myAddress);

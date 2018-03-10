@@ -76,6 +76,9 @@ public class MonitorMain extends BisqExecutable {
                 .withRequiredArg();
         parser.accepts(AppOptionKeys.APP_NAME_KEY, description("Application name", DEFAULT_APP_NAME))
                 .withRequiredArg();
+        parser.accepts(MonitorOptionKeys.PORT,
+                description("Set port to listen on", "80"))
+                .withRequiredArg();
 
         OptionSet options;
         try {
@@ -96,7 +99,10 @@ public class MonitorMain extends BisqExecutable {
         // In order to work around a bug in JavaFX 8u25 and below, you must include the following code as the first line of your realMain method:
         Thread.currentThread().setContextClassLoader(MonitorMain.class.getClassLoader());
 
-        port(80);
+
+        String port = environment.getProperty(MonitorOptionKeys.PORT);
+
+        port(Integer.parseInt(port));
         get("/", (req, res) -> {
             log.info("Incoming request from: " + req.userAgent());
             return seedNodeMonitor.getMetricsModel().getResultAsHtml();
@@ -121,6 +127,9 @@ public class MonitorMain extends BisqExecutable {
                 .withRequiredArg();
         parser.accepts(MonitorOptionKeys.SLACK_PROVIDER_SEED_CHANNEL,
                 description("Set slack secret for provider node monitor", ""))
+                .withRequiredArg();
+        parser.accepts(MonitorOptionKeys.PORT,
+                description("Set port to listen on", "80"))
                 .withRequiredArg();
     }
 

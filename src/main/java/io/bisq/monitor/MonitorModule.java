@@ -63,6 +63,7 @@ class MonitorModule extends AppModule {
         bindConstant().annotatedWith(named(MonitorOptionKeys.SLACK_URL_SEED_CHANNEL)).to(environment.getRequiredProperty(MonitorOptionKeys.SLACK_URL_SEED_CHANNEL));
         bindConstant().annotatedWith(named(MonitorOptionKeys.SLACK_BTC_SEED_CHANNEL)).to(environment.getRequiredProperty(MonitorOptionKeys.SLACK_BTC_SEED_CHANNEL));
         bindConstant().annotatedWith(named(MonitorOptionKeys.SLACK_PROVIDER_SEED_CHANNEL)).to(environment.getRequiredProperty(MonitorOptionKeys.SLACK_PROVIDER_SEED_CHANNEL));
+        bindConstant().annotatedWith(named(MonitorOptionKeys.PORT)).to(environment.getRequiredProperty(MonitorOptionKeys.PORT));
 
         // bind(CachingViewLoader.class).in(Singleton.class);
         bind(KeyStorage.class).in(Singleton.class);
