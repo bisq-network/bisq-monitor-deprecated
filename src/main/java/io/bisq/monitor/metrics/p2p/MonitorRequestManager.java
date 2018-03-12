@@ -1,7 +1,7 @@
 package io.bisq.monitor.metrics.p2p;
 
-import io.bisq.common.Timer;
-import io.bisq.common.UserThread;
+import bisq.common.Timer;
+import bisq.common.UserThread;
 import io.bisq.monitor.MonitorOptionKeys;
 import io.bisq.monitor.metrics.Metrics;
 import io.bisq.monitor.metrics.MetricsModel;

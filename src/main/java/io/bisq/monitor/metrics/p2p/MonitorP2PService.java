@@ -17,8 +17,8 @@
 
 package io.bisq.monitor.metrics.p2p;
 
-import io.bisq.common.app.Log;
-import io.bisq.common.proto.persistable.PersistedDataHost;
+import bisq.common.app.Log;
+import bisq.common.proto.persistable.PersistedDataHost;
 import io.bisq.network.Socks5ProxyProvider;
 import io.bisq.network.p2p.network.NetworkNode;
 import io.bisq.network.p2p.network.SetupListener;

@@ -17,9 +17,9 @@
 
 package io.bisq.monitor;
 
-import io.bisq.common.app.Version;
-import io.bisq.common.crypto.KeyRing;
-import io.bisq.common.proto.persistable.PersistedDataHost;
+import bisq.common.app.Version;
+import bisq.common.crypto.KeyRing;
+import bisq.common.proto.persistable.PersistedDataHost;
 import io.bisq.core.app.BisqEnvironment;
 import io.bisq.core.app.SetupUtils;
 import io.bisq.core.btc.wallet.WalletsSetup;

@@ -17,9 +17,9 @@
 
 package io.bisq.monitor.metrics;
 
-import io.bisq.common.locale.Res;
-import io.bisq.common.util.MathUtils;
-import io.bisq.common.util.Tuple2;
+import bisq.common.locale.Res;
+import bisq.common.util.MathUtils;
+import bisq.common.util.Tuple2;
 import io.bisq.core.btc.BitcoinNodes;
 import io.bisq.core.btc.wallet.WalletsSetup;
 import io.bisq.monitor.MonitorOptionKeys;

@@ -17,10 +17,10 @@
 
 package io.bisq.monitor;
 
-import io.bisq.common.CommonOptionKeys;
-import io.bisq.common.app.Version;
-import io.bisq.common.crypto.KeyStorage;
-import io.bisq.common.storage.Storage;
+import bisq.common.CommonOptionKeys;
+import bisq.common.app.Version;
+import bisq.common.crypto.KeyStorage;
+import bisq.common.storage.Storage;
 import io.bisq.core.app.AppOptionKeys;
 import io.bisq.core.app.BisqEnvironment;
 import io.bisq.core.btc.BtcOptionKeys;
