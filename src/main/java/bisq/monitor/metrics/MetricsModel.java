@@ -15,14 +15,14 @@
  * along with bisq. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.bisq.monitor.metrics;
+package bisq.monitor.metrics;
 
 import bisq.common.locale.Res;
 import bisq.common.util.MathUtils;
 import bisq.common.util.Tuple2;
 import bisq.core.btc.BitcoinNodes;
 import bisq.core.btc.wallet.WalletsSetup;
-import io.bisq.monitor.MonitorOptionKeys;
+import bisq.monitor.MonitorOptionKeys;
 import bisq.network.p2p.NodeAddress;
 import bisq.network.p2p.seed.SeedNodeRepository;
 import lombok.Getter;

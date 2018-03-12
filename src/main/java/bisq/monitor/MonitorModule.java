@@ -15,7 +15,7 @@
  * along with Bisq. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.bisq.monitor;
+package bisq.monitor;
 
 import com.google.inject.Singleton;
 import com.google.inject.name.Names;
@@ -41,7 +41,7 @@ import bisq.core.proto.persistable.CorePersistenceProtoResolver;
 import bisq.core.trade.TradeModule;
 import bisq.core.user.Preferences;
 import bisq.core.user.User;
-import io.bisq.monitor.metrics.p2p.MonitorP2PModule;
+import bisq.monitor.metrics.p2p.MonitorP2PModule;
 import bisq.network.crypto.EncryptionServiceModule;
 import bisq.network.p2p.network.BridgeAddressProvider;
 import bisq.network.p2p.seed.SeedNodeRepository;

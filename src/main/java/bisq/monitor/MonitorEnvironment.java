@@ -15,7 +15,7 @@
  * along with bisq. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.bisq.monitor;
+package bisq.monitor;
 
 import bisq.common.CommonOptionKeys;
 import bisq.common.app.Version;

@@ -1,10 +1,10 @@
-package io.bisq.monitor.metrics.p2p;
+package bisq.monitor.metrics.p2p;
 
 import bisq.common.Timer;
 import bisq.common.UserThread;
-import io.bisq.monitor.MonitorOptionKeys;
-import io.bisq.monitor.metrics.Metrics;
-import io.bisq.monitor.metrics.MetricsModel;
+import bisq.monitor.MonitorOptionKeys;
+import bisq.monitor.metrics.Metrics;
+import bisq.monitor.metrics.MetricsModel;
 import bisq.network.p2p.NodeAddress;
 import bisq.network.p2p.network.CloseConnectionReason;
 import bisq.network.p2p.network.Connection;

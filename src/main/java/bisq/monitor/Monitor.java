@@ -1,4 +1,4 @@
-package io.bisq.monitor;
+package bisq.monitor;
 
 import ch.qos.logback.classic.Level;
 import com.google.inject.Guice;
@@ -20,8 +20,8 @@ import bisq.core.btc.wallet.BsqWalletService;
 import bisq.core.btc.wallet.BtcWalletService;
 import bisq.core.btc.wallet.WalletsSetup;
 import bisq.core.offer.OpenOfferManager;
-import io.bisq.monitor.metrics.MetricsModel;
-import io.bisq.monitor.metrics.p2p.MonitorP2PService;
+import bisq.monitor.metrics.MetricsModel;
+import bisq.monitor.metrics.p2p.MonitorP2PService;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;

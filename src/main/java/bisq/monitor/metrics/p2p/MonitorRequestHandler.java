@@ -1,5 +1,6 @@
-package io.bisq.monitor.metrics.p2p;
+package bisq.monitor.metrics.p2p;
 
+import bisq.monitor.metrics.Metrics;
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.SettableFuture;
@@ -9,7 +10,6 @@ import bisq.common.app.DevEnv;
 import bisq.common.app.Log;
 import bisq.common.proto.network.NetworkEnvelope;
 import bisq.common.proto.network.NetworkPayload;
-import io.bisq.monitor.metrics.Metrics;
 import bisq.network.p2p.NodeAddress;
 import bisq.network.p2p.network.CloseConnectionReason;
 import bisq.network.p2p.network.Connection;

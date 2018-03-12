@@ -15,11 +15,24 @@
  * along with bisq. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.bisq.monitor;
+package bisq.monitor.metrics;
 
-public class MonitorOptionKeys {
+import lombok.Getter;
+import lombok.Setter;
 
-    public static final String SLACK_URL_SEED_CHANNEL = "slackUrlSeedChannel";
-    public static final String SLACK_BTC_SEED_CHANNEL = "slackUrlBtcChannel";
-    public static final String SLACK_PROVIDER_SEED_CHANNEL = "slackUrlProviderChannel";
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+@Getter
+public class Metrics {
+    List<Long> requestDurations = new ArrayList<>();
+    List<String> errorMessages = new ArrayList<>();
+    List<Map<String, Integer>> receivedObjectsList = new ArrayList<>();
+    @Setter
+    long lastDataRequestTs;
+    @Setter
+    long lastDataResponseTs;
+    @Setter
+    long numRequestAttempts;
 }

@@ -15,7 +15,7 @@
  * along with bisq. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.bisq.monitor.metrics.p2p;
+package bisq.monitor.metrics.p2p;
 
 import bisq.common.app.Log;
 import bisq.common.proto.persistable.PersistedDataHost;
