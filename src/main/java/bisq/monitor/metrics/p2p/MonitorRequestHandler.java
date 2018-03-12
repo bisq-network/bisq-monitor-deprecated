@@ -1,32 +1,59 @@
-package io.bisq.monitor.metrics.p2p;
+/*
+ * This file is part of Bisq.
+ *
+ * Bisq is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or (at
+ * your option) any later version.
+ *
+ * Bisq is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public
+ * License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with Bisq. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+package bisq.monitor.metrics.p2p;
+
+import bisq.monitor.metrics.Metrics;
+
+import bisq.network.p2p.NodeAddress;
+import bisq.network.p2p.network.CloseConnectionReason;
+import bisq.network.p2p.network.Connection;
+import bisq.network.p2p.network.MessageListener;
+import bisq.network.p2p.network.NetworkNode;
+import bisq.network.p2p.peers.getdata.messages.GetDataRequest;
+import bisq.network.p2p.peers.getdata.messages.GetDataResponse;
+import bisq.network.p2p.peers.getdata.messages.PreliminaryGetDataRequest;
+import bisq.network.p2p.storage.P2PDataStorage;
+import bisq.network.p2p.storage.payload.PersistableNetworkPayload;
+import bisq.network.p2p.storage.payload.ProtectedStorageEntry;
+import bisq.network.p2p.storage.payload.ProtectedStoragePayload;
+
+import bisq.common.Timer;
+import bisq.common.UserThread;
+import bisq.common.app.DevEnv;
+import bisq.common.app.Log;
+import bisq.common.proto.network.NetworkEnvelope;
+import bisq.common.proto.network.NetworkPayload;
 
 import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.SettableFuture;
-import io.bisq.common.Timer;
-import io.bisq.common.UserThread;
-import io.bisq.common.app.DevEnv;
-import io.bisq.common.app.Log;
-import io.bisq.common.proto.network.NetworkEnvelope;
-import io.bisq.common.proto.network.NetworkPayload;
-import io.bisq.monitor.metrics.Metrics;
-import io.bisq.network.p2p.NodeAddress;
-import io.bisq.network.p2p.network.CloseConnectionReason;
-import io.bisq.network.p2p.network.Connection;
-import io.bisq.network.p2p.network.MessageListener;
-import io.bisq.network.p2p.network.NetworkNode;
-import io.bisq.network.p2p.peers.getdata.messages.GetDataRequest;
-import io.bisq.network.p2p.peers.getdata.messages.GetDataResponse;
-import io.bisq.network.p2p.peers.getdata.messages.PreliminaryGetDataRequest;
-import io.bisq.network.p2p.storage.P2PDataStorage;
-import io.bisq.network.p2p.storage.payload.PersistableNetworkPayload;
-import io.bisq.network.p2p.storage.payload.ProtectedStorageEntry;
-import io.bisq.network.p2p.storage.payload.ProtectedStoragePayload;
-import lombok.extern.slf4j.Slf4j;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Random;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 class MonitorRequestHandler implements MessageListener {

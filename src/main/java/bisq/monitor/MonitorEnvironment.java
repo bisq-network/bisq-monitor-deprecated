@@ -1,5 +1,5 @@
 /*
- * This file is part of bisq.
+ * This file is part of Bisq.
  *
  * bisq is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Affero General Public License as published by
@@ -15,24 +15,29 @@
  * along with bisq. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.bisq.monitor;
+package bisq.monitor;
 
-import io.bisq.common.CommonOptionKeys;
-import io.bisq.common.app.Version;
-import io.bisq.common.crypto.KeyStorage;
-import io.bisq.common.storage.Storage;
-import io.bisq.core.app.AppOptionKeys;
-import io.bisq.core.app.BisqEnvironment;
-import io.bisq.core.btc.BtcOptionKeys;
-import io.bisq.core.btc.UserAgent;
-import io.bisq.core.dao.DaoOptionKeys;
-import io.bisq.network.NetworkOptionKeys;
-import joptsimple.OptionSet;
+import bisq.core.app.AppOptionKeys;
+import bisq.core.app.BisqEnvironment;
+import bisq.core.btc.BtcOptionKeys;
+import bisq.core.btc.UserAgent;
+import bisq.core.dao.DaoOptionKeys;
+
+import bisq.network.NetworkOptionKeys;
+
+import bisq.common.CommonOptionKeys;
+import bisq.common.app.Version;
+import bisq.common.crypto.KeyStorage;
+import bisq.common.storage.Storage;
+
 import org.springframework.core.env.JOptCommandLinePropertySource;
 import org.springframework.core.env.PropertiesPropertySource;
 import org.springframework.core.env.PropertySource;
 
+import joptsimple.OptionSet;
+
 import java.nio.file.Paths;
+
 import java.util.Properties;
 
 import static com.google.common.base.Preconditions.checkNotNull;

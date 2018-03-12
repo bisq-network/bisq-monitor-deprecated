@@ -1,5 +1,5 @@
 /*
- * This file is part of bisq.
+ * This file is part of Bisq.
  *
  * bisq is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Affero General Public License as published by
@@ -15,14 +15,16 @@
  * along with bisq. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.bisq.monitor.metrics.p2p;
+package bisq.monitor.metrics.p2p;
 
-import io.bisq.common.app.Log;
-import io.bisq.common.proto.persistable.PersistedDataHost;
-import io.bisq.network.Socks5ProxyProvider;
-import io.bisq.network.p2p.network.NetworkNode;
-import io.bisq.network.p2p.network.SetupListener;
-import io.bisq.network.p2p.storage.P2PDataStorage;
+import bisq.network.Socks5ProxyProvider;
+import bisq.network.p2p.network.NetworkNode;
+import bisq.network.p2p.network.SetupListener;
+import bisq.network.p2p.storage.P2PDataStorage;
+
+import bisq.common.app.Log;
+import bisq.common.proto.persistable.PersistedDataHost;
+
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 

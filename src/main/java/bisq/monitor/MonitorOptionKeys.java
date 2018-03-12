@@ -1,5 +1,5 @@
 /*
- * This file is part of bisq.
+ * This file is part of Bisq.
  *
  * bisq is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Affero General Public License as published by
@@ -15,7 +15,7 @@
  * along with bisq. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.bisq.monitor;
+package bisq.monitor;
 
 public class MonitorOptionKeys {
 

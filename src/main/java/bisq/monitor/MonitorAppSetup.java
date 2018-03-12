@@ -1,5 +1,5 @@
 /*
- * This file is part of bisq.
+ * This file is part of Bisq.
  *
  * bisq is free software: you can redistribute it and/or modify it
  * under the terms of the GNU Affero General Public License as published by
@@ -15,22 +15,27 @@
  * along with bisq. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.bisq.monitor;
+package bisq.monitor;
 
-import io.bisq.common.app.Version;
-import io.bisq.common.crypto.KeyRing;
-import io.bisq.common.proto.persistable.PersistedDataHost;
-import io.bisq.core.app.BisqEnvironment;
-import io.bisq.core.app.SetupUtils;
-import io.bisq.core.btc.wallet.WalletsSetup;
-import io.bisq.monitor.metrics.p2p.MonitorP2PService;
-import io.bisq.network.crypto.EncryptionService;
-import io.bisq.network.p2p.network.SetupListener;
-import io.bisq.network.p2p.peers.PeerManager;
-import lombok.extern.slf4j.Slf4j;
+import bisq.monitor.metrics.p2p.MonitorP2PService;
+
+import bisq.core.app.BisqEnvironment;
+import bisq.core.app.SetupUtils;
+import bisq.core.btc.wallet.WalletsSetup;
+
+import bisq.network.crypto.EncryptionService;
+import bisq.network.p2p.network.SetupListener;
+import bisq.network.p2p.peers.PeerManager;
+
+import bisq.common.app.Version;
+import bisq.common.crypto.KeyRing;
+import bisq.common.proto.persistable.PersistedDataHost;
 
 import javax.inject.Inject;
+
 import java.util.ArrayList;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class MonitorAppSetup {

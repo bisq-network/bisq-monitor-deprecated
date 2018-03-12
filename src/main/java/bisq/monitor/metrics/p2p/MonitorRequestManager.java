@@ -1,25 +1,52 @@
-package io.bisq.monitor.metrics.p2p;
+/*
+ * This file is part of Bisq.
+ *
+ * Bisq is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or (at
+ * your option) any later version.
+ *
+ * Bisq is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public
+ * License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with Bisq. If not, see <http://www.gnu.org/licenses/>.
+ */
 
-import io.bisq.common.Timer;
-import io.bisq.common.UserThread;
-import io.bisq.monitor.MonitorOptionKeys;
-import io.bisq.monitor.metrics.Metrics;
-import io.bisq.monitor.metrics.MetricsModel;
-import io.bisq.network.p2p.NodeAddress;
-import io.bisq.network.p2p.network.CloseConnectionReason;
-import io.bisq.network.p2p.network.Connection;
-import io.bisq.network.p2p.network.ConnectionListener;
-import io.bisq.network.p2p.network.NetworkNode;
-import io.bisq.network.p2p.seed.SeedNodeRepository;
-import io.bisq.network.p2p.storage.P2PDataStorage;
-import lombok.extern.slf4j.Slf4j;
+package bisq.monitor.metrics.p2p;
+
+import bisq.monitor.MonitorOptionKeys;
+import bisq.monitor.metrics.Metrics;
+import bisq.monitor.metrics.MetricsModel;
+
+import bisq.network.p2p.NodeAddress;
+import bisq.network.p2p.network.CloseConnectionReason;
+import bisq.network.p2p.network.Connection;
+import bisq.network.p2p.network.ConnectionListener;
+import bisq.network.p2p.network.NetworkNode;
+import bisq.network.p2p.seed.SeedNodeRepository;
+import bisq.network.p2p.storage.P2PDataStorage;
+
+import bisq.common.Timer;
+import bisq.common.UserThread;
+
 import net.gpedro.integrations.slack.SlackApi;
 import net.gpedro.integrations.slack.SlackMessage;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.util.*;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class MonitorRequestManager implements ConnectionListener {

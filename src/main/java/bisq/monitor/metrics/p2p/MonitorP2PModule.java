@@ -15,25 +15,29 @@
  * along with Bisq. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package io.bisq.monitor.metrics.p2p;
+package bisq.monitor.metrics.p2p;
+
+import bisq.monitor.metrics.MetricsModel;
+
+import bisq.network.NetworkOptionKeys;
+import bisq.network.Socks5ProxyProvider;
+import bisq.network.p2p.NetworkNodeProvider;
+import bisq.network.p2p.P2PService;
+import bisq.network.p2p.network.NetworkNode;
+import bisq.network.p2p.peers.BanList;
+import bisq.network.p2p.peers.Broadcaster;
+import bisq.network.p2p.peers.PeerManager;
+import bisq.network.p2p.peers.getdata.RequestDataManager;
+import bisq.network.p2p.peers.keepalive.KeepAliveManager;
+import bisq.network.p2p.peers.peerexchange.PeerExchangeManager;
+import bisq.network.p2p.storage.P2PDataStorage;
+
+import bisq.common.app.AppModule;
+
+import org.springframework.core.env.Environment;
 
 import com.google.inject.Singleton;
 import com.google.inject.name.Names;
-import io.bisq.common.app.AppModule;
-import io.bisq.network.NetworkOptionKeys;
-import io.bisq.network.Socks5ProxyProvider;
-import io.bisq.network.p2p.NetworkNodeProvider;
-import io.bisq.network.p2p.P2PService;
-import io.bisq.network.p2p.network.NetworkNode;
-import io.bisq.network.p2p.peers.BanList;
-import io.bisq.network.p2p.peers.Broadcaster;
-import io.bisq.network.p2p.peers.PeerManager;
-import io.bisq.network.p2p.peers.getdata.RequestDataManager;
-import io.bisq.network.p2p.peers.keepalive.KeepAliveManager;
-import io.bisq.network.p2p.peers.peerexchange.PeerExchangeManager;
-import io.bisq.network.p2p.storage.P2PDataStorage;
-import io.bisq.monitor.metrics.MetricsModel;
-import org.springframework.core.env.Environment;
 
 import java.io.File;
 
