@@ -17,9 +17,18 @@
 
 package bisq.monitor;
 
-import ch.qos.logback.classic.Level;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
+import bisq.monitor.metrics.MetricsModel;
+import bisq.monitor.metrics.p2p.MonitorP2PService;
+
+import bisq.core.app.AppOptionKeys;
+import bisq.core.app.BisqEnvironment;
+import bisq.core.arbitration.ArbitratorManager;
+import bisq.core.btc.BaseCurrencyNetwork;
+import bisq.core.btc.wallet.BsqWalletService;
+import bisq.core.btc.wallet.BtcWalletService;
+import bisq.core.btc.wallet.WalletsSetup;
+import bisq.core.offer.OpenOfferManager;
+
 import bisq.common.CommonOptionKeys;
 import bisq.common.UserThread;
 import bisq.common.app.Log;
@@ -29,25 +38,25 @@ import bisq.common.handlers.ResultHandler;
 import bisq.common.locale.CurrencyUtil;
 import bisq.common.locale.Res;
 import bisq.common.util.Utilities;
-import bisq.core.app.AppOptionKeys;
-import bisq.core.app.BisqEnvironment;
-import bisq.core.arbitration.ArbitratorManager;
-import bisq.core.btc.BaseCurrencyNetwork;
-import bisq.core.btc.wallet.BsqWalletService;
-import bisq.core.btc.wallet.BtcWalletService;
-import bisq.core.btc.wallet.WalletsSetup;
-import bisq.core.offer.OpenOfferManager;
-import bisq.monitor.metrics.MetricsModel;
-import bisq.monitor.metrics.p2p.MonitorP2PService;
-import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.exception.ExceptionUtils;
+
 import org.bitcoinj.store.BlockStoreException;
+
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+
+import org.apache.commons.lang3.exception.ExceptionUtils;
+
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
-import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
 import java.security.Security;
+
+import java.nio.file.Paths;
+
+import ch.qos.logback.classic.Level;
+
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Monitor {

@@ -17,30 +17,51 @@
 
 package bisq.monitor.metrics;
 
+import bisq.monitor.MonitorOptionKeys;
+
+import bisq.core.btc.BitcoinNodes;
+import bisq.core.btc.wallet.WalletsSetup;
+
+import bisq.network.p2p.NodeAddress;
+import bisq.network.p2p.seed.SeedNodeRepository;
+
 import bisq.common.locale.Res;
 import bisq.common.util.MathUtils;
 import bisq.common.util.Tuple2;
-import bisq.core.btc.BitcoinNodes;
-import bisq.core.btc.wallet.WalletsSetup;
-import bisq.monitor.MonitorOptionKeys;
-import bisq.network.p2p.NodeAddress;
-import bisq.network.p2p.seed.SeedNodeRepository;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
+
 import net.gpedro.integrations.slack.SlackApi;
 import net.gpedro.integrations.slack.SlackMessage;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DurationFormatUtils;
+
 import org.bitcoinj.core.Peer;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DurationFormatUtils;
+
 import java.net.InetAddress;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.OptionalDouble;
+import java.util.Set;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class MetricsModel {

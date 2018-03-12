@@ -17,22 +17,27 @@
 
 package bisq.monitor;
 
-import bisq.common.CommonOptionKeys;
-import bisq.common.app.Version;
-import bisq.common.crypto.KeyStorage;
-import bisq.common.storage.Storage;
 import bisq.core.app.AppOptionKeys;
 import bisq.core.app.BisqEnvironment;
 import bisq.core.btc.BtcOptionKeys;
 import bisq.core.btc.UserAgent;
 import bisq.core.dao.DaoOptionKeys;
+
 import bisq.network.NetworkOptionKeys;
-import joptsimple.OptionSet;
+
+import bisq.common.CommonOptionKeys;
+import bisq.common.app.Version;
+import bisq.common.crypto.KeyStorage;
+import bisq.common.storage.Storage;
+
 import org.springframework.core.env.JOptCommandLinePropertySource;
 import org.springframework.core.env.PropertiesPropertySource;
 import org.springframework.core.env.PropertySource;
 
+import joptsimple.OptionSet;
+
 import java.nio.file.Paths;
+
 import java.util.Properties;
 
 import static com.google.common.base.Preconditions.checkNotNull;

@@ -17,11 +17,10 @@
 
 package bisq.monitor.metrics.p2p;
 
-import bisq.common.Timer;
-import bisq.common.UserThread;
 import bisq.monitor.MonitorOptionKeys;
 import bisq.monitor.metrics.Metrics;
 import bisq.monitor.metrics.MetricsModel;
+
 import bisq.network.p2p.NodeAddress;
 import bisq.network.p2p.network.CloseConnectionReason;
 import bisq.network.p2p.network.Connection;
@@ -29,14 +28,25 @@ import bisq.network.p2p.network.ConnectionListener;
 import bisq.network.p2p.network.NetworkNode;
 import bisq.network.p2p.seed.SeedNodeRepository;
 import bisq.network.p2p.storage.P2PDataStorage;
-import lombok.extern.slf4j.Slf4j;
+
+import bisq.common.Timer;
+import bisq.common.UserThread;
+
 import net.gpedro.integrations.slack.SlackApi;
 import net.gpedro.integrations.slack.SlackMessage;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.util.*;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class MonitorRequestManager implements ConnectionListener {

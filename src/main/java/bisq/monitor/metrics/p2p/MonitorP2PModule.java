@@ -18,9 +18,7 @@
 package bisq.monitor.metrics.p2p;
 
 import bisq.monitor.metrics.MetricsModel;
-import com.google.inject.Singleton;
-import com.google.inject.name.Names;
-import bisq.common.app.AppModule;
+
 import bisq.network.NetworkOptionKeys;
 import bisq.network.Socks5ProxyProvider;
 import bisq.network.p2p.NetworkNodeProvider;
@@ -33,7 +31,13 @@ import bisq.network.p2p.peers.getdata.RequestDataManager;
 import bisq.network.p2p.peers.keepalive.KeepAliveManager;
 import bisq.network.p2p.peers.peerexchange.PeerExchangeManager;
 import bisq.network.p2p.storage.P2PDataStorage;
+
+import bisq.common.app.AppModule;
+
 import org.springframework.core.env.Environment;
+
+import com.google.inject.Singleton;
+import com.google.inject.name.Names;
 
 import java.io.File;
 
