@@ -26,7 +26,7 @@ import io.bisq.core.app.BisqEnvironment;
 import io.bisq.core.btc.BtcOptionKeys;
 import io.bisq.core.btc.UserAgent;
 import io.bisq.core.dao.DaoOptionKeys;
-import io.bisq.network.NetworkOptionKeys;
+import bisq.network.NetworkOptionKeys;
 import joptsimple.OptionSet;
 import org.springframework.core.env.JOptCommandLinePropertySource;
 import org.springframework.core.env.PropertiesPropertySource;

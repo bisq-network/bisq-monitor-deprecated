@@ -19,10 +19,10 @@ package io.bisq.monitor.metrics.p2p;
 
 import bisq.common.app.Log;
 import bisq.common.proto.persistable.PersistedDataHost;
-import io.bisq.network.Socks5ProxyProvider;
-import io.bisq.network.p2p.network.NetworkNode;
-import io.bisq.network.p2p.network.SetupListener;
-import io.bisq.network.p2p.storage.P2PDataStorage;
+import bisq.network.Socks5ProxyProvider;
+import bisq.network.p2p.network.NetworkNode;
+import bisq.network.p2p.network.SetupListener;
+import bisq.network.p2p.storage.P2PDataStorage;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 

@@ -42,9 +42,9 @@ import io.bisq.core.trade.TradeModule;
 import io.bisq.core.user.Preferences;
 import io.bisq.core.user.User;
 import io.bisq.monitor.metrics.p2p.MonitorP2PModule;
-import io.bisq.network.crypto.EncryptionServiceModule;
-import io.bisq.network.p2p.network.BridgeAddressProvider;
-import io.bisq.network.p2p.seed.SeedNodeRepository;
+import bisq.network.crypto.EncryptionServiceModule;
+import bisq.network.p2p.network.BridgeAddressProvider;
+import bisq.network.p2p.seed.SeedNodeRepository;
 import org.springframework.core.env.Environment;
 
 import java.io.File;

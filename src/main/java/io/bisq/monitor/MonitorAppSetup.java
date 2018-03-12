@@ -24,9 +24,9 @@ import io.bisq.core.app.BisqEnvironment;
 import io.bisq.core.app.SetupUtils;
 import io.bisq.core.btc.wallet.WalletsSetup;
 import io.bisq.monitor.metrics.p2p.MonitorP2PService;
-import io.bisq.network.crypto.EncryptionService;
-import io.bisq.network.p2p.network.SetupListener;
-import io.bisq.network.p2p.peers.PeerManager;
+import bisq.network.crypto.EncryptionService;
+import bisq.network.p2p.network.SetupListener;
+import bisq.network.p2p.peers.PeerManager;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.inject.Inject;
