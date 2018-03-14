@@ -21,11 +21,11 @@ import bisq.monitor.MonitorOptionKeys;
 
 import bisq.core.btc.BitcoinNodes;
 import bisq.core.btc.wallet.WalletsSetup;
+import bisq.core.locale.Res;
 
 import bisq.network.p2p.NodeAddress;
 import bisq.network.p2p.seed.SeedNodeRepository;
 
-import bisq.common.locale.Res;
 import bisq.common.util.MathUtils;
 import bisq.common.util.Tuple2;
 
