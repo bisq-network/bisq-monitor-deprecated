@@ -40,10 +40,10 @@ import javax.inject.Named;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DurationFormatUtils;
 
-import java.net.InetAddress;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+
+import java.net.InetAddress;
 
 import java.util.ArrayList;
 import java.util.Calendar;

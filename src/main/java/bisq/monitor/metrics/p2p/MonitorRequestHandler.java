@@ -51,9 +51,9 @@ import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.jetbrains.annotations.NotNull;
-
 import lombok.extern.slf4j.Slf4j;
+
+import org.jetbrains.annotations.NotNull;
 
 @Slf4j
 class MonitorRequestHandler implements MessageListener {
