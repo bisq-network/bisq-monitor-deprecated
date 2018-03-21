@@ -1,0 +1,34 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '2.0.2'
+}
+
+group = 'network.bisq'
+version = '0.7.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+mainClassName = 'bisq.monitor.MonitorMain'
+
+shadowJar {
+    classifier = null
+    version = null
+}
+
+repositories {
+    jcenter()
+    maven { url "https://jitpack.io" }
+    maven { url 'https://raw.githubusercontent.com/JesusMcCloud/tor-binary/testrelease/release/' }
+}
+
+dependencies {
+    compile 'network.bisq:bisq-core:-SNAPSHOT'
+    compile 'com.sparkjava:spark-core:2.5.2'
+    compile 'org.bouncycastle:bcprov-jdk15on:1.56'
+    compile 'org.bouncycastle:bcpg-jdk15on:1.56'
+    compile 'org.bouncycastle:bcpg-jdk16:1.46'
+    compile 'net.gpedro.integrations.slack:slack-webhook:1.1.1'
+    compileOnly 'org.projectlombok:lombok:1.16.16'
+    annotationProcessor 'org.projectlombok:lombok:1.16.16'
+}

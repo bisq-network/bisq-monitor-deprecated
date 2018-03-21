@@ -2,11 +2,11 @@
 
 ## Build
 
-    mvn package
+    ./gradlew build
 
 ## Run
 
-    java -jar target/Monitor.jar
+    java -jar build/libs/bisq-monitor.jar
 
 ## Import into IDEA
 
