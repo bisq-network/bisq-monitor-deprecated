@@ -6,7 +6,7 @@
 
 ## Run
 
-    java -jar build/libs/bisq-monitor.jar
+    ./build/app/bin/bisq-monitor [options]
 
 ## Import into IDEA
 
