@@ -144,7 +144,7 @@ public class MonitorMain extends BisqExecutable {
     @Override
     protected void doExecute(OptionSet options) {
         final MonitorEnvironment environment = getEnvironment(options);
-        Monitor.setEnvironment(environment);
+        Monitor.setMonitorEnvironment(environment);
 
         UserThread.execute(() -> {
             try {
