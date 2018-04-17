@@ -71,7 +71,7 @@ public class MonitorMain extends HeadlessExecutable {
                 description("Set slack secret for provider node monitor", ""))
                 .withRequiredArg();
         parser.accepts(MonitorOptionKeys.PORT,
-                description("Set port to listen on", "80"))
+                description("Set port to listen on", "8080"))
                 .withRequiredArg();
     }
 
@@ -84,6 +84,8 @@ public class MonitorMain extends HeadlessExecutable {
         String port = monitorEnvironment.getProperty(MonitorOptionKeys.PORT);
 
         startHttpServer(port);
+
+        keepRunning();
     }
 
     @Override
@@ -93,7 +95,7 @@ public class MonitorMain extends HeadlessExecutable {
     }
 
     @Override
-    protected void launchApplication() {
+    protected void createAndLaunchApplication() {
         UserThread.execute(() -> {
             try {
                 monitor = new Monitor();
