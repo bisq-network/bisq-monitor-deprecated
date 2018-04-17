@@ -26,7 +26,6 @@ import bisq.core.btc.wallet.BsqWalletService;
 import bisq.core.btc.wallet.BtcWalletService;
 import bisq.core.btc.wallet.WalletsSetup;
 import bisq.core.offer.OpenOfferManager;
-import bisq.core.setup.CoreSetup;
 
 import bisq.common.UserThread;
 import bisq.common.handlers.ResultHandler;
@@ -57,7 +56,6 @@ public class Monitor implements ShutDownHandler {
         CommonSetup.setup((throwable, doShutDown) -> {
             log.error(throwable.toString());
         });
-        CoreSetup.setup(monitorEnvironment);
         log.info("Monitor.VERSION: " + VERSION);
 
         monitorModule = new MonitorModule(monitorEnvironment);
