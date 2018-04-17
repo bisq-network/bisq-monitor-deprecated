@@ -20,7 +20,6 @@ package bisq.monitor;
 import bisq.monitor.metrics.MetricsModel;
 import bisq.monitor.metrics.p2p.MonitorP2PService;
 
-import bisq.core.app.ShutDownHandler;
 import bisq.core.arbitration.ArbitratorManager;
 import bisq.core.btc.wallet.BsqWalletService;
 import bisq.core.btc.wallet.BtcWalletService;
@@ -30,6 +29,7 @@ import bisq.core.offer.OpenOfferManager;
 import bisq.common.UserThread;
 import bisq.common.handlers.ResultHandler;
 import bisq.common.setup.CommonSetup;
+import bisq.common.setup.GracefulShutDownHandler;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -38,7 +38,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class Monitor implements ShutDownHandler {
+public class Monitor implements GracefulShutDownHandler {
     public static final String VERSION = "1.0.1";
 
     private static MonitorEnvironment monitorEnvironment;
