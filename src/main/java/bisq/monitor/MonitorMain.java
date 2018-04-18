@@ -19,15 +19,15 @@ package bisq.monitor;
 
 import bisq.core.app.BisqEnvironment;
 import bisq.core.app.BisqExecutable;
-import bisq.core.app.HeadlessExecutable;
+import bisq.core.app.ExecutableForAppWithP2p;
 
 import bisq.common.UserThread;
 import bisq.common.app.AppModule;
+import bisq.common.app.Capabilities;
+import bisq.common.setup.CommonSetup;
 
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
-
-import com.google.inject.Injector;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -39,25 +39,83 @@ import static spark.Spark.port;
 import spark.Spark;
 
 @Slf4j
-public class MonitorMain extends HeadlessExecutable {
-    private static Monitor monitor;
-    private MonitorEnvironment monitorEnvironment;
+public class MonitorMain extends ExecutableForAppWithP2p {
+    private Monitor monitor;
 
     public static void main(String[] args) throws Exception {
-        // We don't want to do the full argument parsing here as that might easily change in update versions
-        // So we only handle the absolute minimum which is APP_NAME, APP_DATA_DIR_KEY and USER_DATA_DIR
         BisqEnvironment.setDefaultAppName("bisq_seednode_monitor");
-        if (BisqExecutable.setupInitialOptionParser(args)) {
-            // For some reason the JavaFX launch process results in us losing the thread context class loader: reset it.
-            // In order to work around a bug in JavaFX 8u25 and below, you must include the following code as the first line of your realMain method:
-            Thread.currentThread().setContextClassLoader(MonitorMain.class.getClassLoader());
-
+        if (BisqExecutable.setupInitialOptionParser(args))
             new MonitorMain().execute(args);
-        }
     }
 
-    private static MonitorEnvironment getEnvironment(OptionSet options) {
-        return new MonitorEnvironment(checkNotNull(options));
+    @Override
+    protected void doExecute(OptionSet options) {
+        super.doExecute(options);
+
+        CommonSetup.setup(this);
+        checkMemory(bisqEnvironment, this);
+
+        startHttpServer(bisqEnvironment.getProperty(MonitorOptionKeys.PORT));
+
+        keepRunning();
+    }
+
+    @Override
+    protected void setupEnvironment(OptionSet options) {
+        bisqEnvironment = new MonitorEnvironment(checkNotNull(options));
+    }
+
+    @Override
+    protected void addCapabilities() {
+        Capabilities.addCapability(Capabilities.Capability.SEED_NODE.ordinal());
+    }
+
+    @Override
+    protected void launchApplication() {
+        UserThread.execute(() -> {
+            try {
+                monitor = new Monitor();
+                onApplicationLaunched();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @Override
+    protected void onApplicationLaunched() {
+        super.onApplicationLaunched();
+    }
+
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // We continue with a series of synchronous execution tasks
+    ///////////////////////////////////////////////////////////////////////////////////////////
+
+    @Override
+    protected AppModule getModule() {
+        return new MonitorModule(bisqEnvironment);
+    }
+
+    @Override
+    protected void applyInjector() {
+        super.applyInjector();
+
+        monitor.setInjector(injector);
+    }
+
+    @Override
+    protected void startApplication() {
+        monitor.startApplication();
+    }
+
+    private void startHttpServer(String port) {
+        port(Integer.parseInt(port));
+        Spark.get("/", (req, res) -> {
+            log.info("Incoming request from: " + req.userAgent());
+            final String resultAsHtml = monitor.getMetricsModel().getResultAsHtml();
+            return resultAsHtml == null ? "Still starting up..." : resultAsHtml;
+        });
     }
 
     @Override
@@ -74,57 +132,7 @@ public class MonitorMain extends HeadlessExecutable {
                 description("Set slack secret for provider node monitor", ""))
                 .withRequiredArg();
         parser.accepts(MonitorOptionKeys.PORT,
-                description("Set port to listen on", "8080"))
+                description("Set port to listen on", "80"))
                 .withRequiredArg();
-    }
-
-    @Override
-    protected void doExecute(OptionSet options) {
-        super.doExecute(options);
-
-        checkMemory(monitorEnvironment, monitor);
-
-        String port = monitorEnvironment.getProperty(MonitorOptionKeys.PORT);
-
-        startHttpServer(port);
-
-        keepRunning();
-    }
-
-    @Override
-    protected void setupEnvironment(OptionSet options) {
-        monitorEnvironment = getEnvironment(options);
-        Monitor.setMonitorEnvironment(monitorEnvironment);
-    }
-
-    @Override
-    protected void launchApplication() {
-        UserThread.execute(() -> {
-            try {
-                monitor = new Monitor();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-    }
-
-    @Override
-    protected AppModule getModule() {
-        //TODO not impl yet
-        return null;
-    }
-
-    @Override
-    protected Injector getInjector() {
-        //TODO not impl yet
-        return null;
-    }
-
-    private void startHttpServer(String port) {
-        port(Integer.parseInt(port));
-        Spark.get("/", (req, res) -> {
-            log.info("Incoming request from: " + req.userAgent());
-            return monitor.getMetricsModel().getResultAsHtml();
-        });
     }
 }

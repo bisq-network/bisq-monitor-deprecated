@@ -22,6 +22,7 @@ import bisq.monitor.metrics.MetricsModel;
 import bisq.network.NetworkOptionKeys;
 import bisq.network.Socks5ProxyProvider;
 import bisq.network.p2p.NetworkNodeProvider;
+import bisq.network.p2p.P2PModule;
 import bisq.network.p2p.P2PService;
 import bisq.network.p2p.network.NetworkNode;
 import bisq.network.p2p.peers.BanList;
@@ -31,8 +32,6 @@ import bisq.network.p2p.peers.getdata.RequestDataManager;
 import bisq.network.p2p.peers.keepalive.KeepAliveManager;
 import bisq.network.p2p.peers.peerexchange.PeerExchangeManager;
 import bisq.network.p2p.storage.P2PDataStorage;
-
-import bisq.common.app.AppModule;
 
 import org.springframework.core.env.Environment;
 
@@ -44,7 +43,7 @@ import java.io.File;
 import static com.google.inject.name.Names.named;
 
 
-public class MonitorP2PModule extends AppModule {
+public class MonitorP2PModule extends P2PModule {
 
     public MonitorP2PModule(Environment environment) {
         super(environment);
