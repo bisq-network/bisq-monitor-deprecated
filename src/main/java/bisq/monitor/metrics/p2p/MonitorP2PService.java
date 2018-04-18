@@ -25,6 +25,8 @@ import bisq.network.p2p.storage.P2PDataStorage;
 import bisq.common.app.Log;
 import bisq.common.proto.persistable.PersistedDataHost;
 
+import javax.inject.Inject;
+
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -47,7 +49,7 @@ public class MonitorP2PService implements SetupListener, PersistedDataHost {
     // Constructor
     ///////////////////////////////////////////////////////////////////////////////////////////
 
-    @com.google.inject.Inject
+    @Inject
     public MonitorP2PService(NetworkNode networkNode,
                              P2PDataStorage p2PDataStorage,
                              MonitorRequestManager requestDataManager,

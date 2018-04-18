@@ -17,109 +17,101 @@
 
 package bisq.monitor;
 
-import bisq.core.app.AppOptionKeys;
 import bisq.core.app.BisqEnvironment;
 import bisq.core.app.BisqExecutable;
+import bisq.core.app.ExecutableForAppWithP2p;
 
 import bisq.common.UserThread;
-import bisq.common.util.Profiler;
-import bisq.common.util.RestartUtil;
-import bisq.common.util.Utilities;
+import bisq.common.app.AppModule;
+import bisq.common.setup.CommonSetup;
 
-import org.bitcoinj.store.BlockStoreException;
-
-import joptsimple.OptionException;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
-
-import org.apache.commons.lang3.exception.ExceptionUtils;
-
-import java.io.IOException;
-
-import java.util.Locale;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
-
 import lombok.extern.slf4j.Slf4j;
 
-import static bisq.core.app.BisqEnvironment.DEFAULT_APP_NAME;
-import static bisq.core.app.BisqEnvironment.DEFAULT_USER_DATA_DIR;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static spark.Spark.get;
 import static spark.Spark.port;
 
+
+
+import spark.Spark;
+
 @Slf4j
-public class MonitorMain extends BisqExecutable {
-    private static final long MAX_MEMORY_MB_DEFAULT = 1024;
-    private static final long CHECK_MEMORY_PERIOD_SEC = 5 * 60;
-    private static Monitor seedNodeMonitor;
-    private volatile boolean stopped;
-    private static long maxMemory = MAX_MEMORY_MB_DEFAULT;
-
-    public static String monitorResult = "No data available yet";
-
-    static {
-        // Need to set default locale initially otherwise we get problems at non-english OS
-        Locale.setDefault(new Locale("en", Locale.getDefault().getCountry()));
-
-        Utilities.removeCryptographyRestrictions();
-    }
+public class MonitorMain extends ExecutableForAppWithP2p {
+    private static final String VERSION = "1.0.1";
+    private Monitor monitor;
 
     public static void main(String[] args) throws Exception {
-        final ThreadFactory threadFactory = new ThreadFactoryBuilder()
-                .setNameFormat("SeedNodeMonitorMain")
-                .setDaemon(true)
-                .build();
-        UserThread.setExecutor(Executors.newSingleThreadExecutor(threadFactory));
-
-        // We don't want to do the full argument parsing here as that might easily change in update versions
-        // So we only handle the absolute minimum which is APP_NAME, APP_DATA_DIR_KEY and USER_DATA_DIR
-        BisqEnvironment.setDefaultAppName("bisq_seednode_monitor");
-        OptionParser parser = new OptionParser();
-        parser.allowsUnrecognizedOptions();
-        parser.accepts(AppOptionKeys.USER_DATA_DIR_KEY, description("User data directory", DEFAULT_USER_DATA_DIR))
-                .withRequiredArg();
-        parser.accepts(AppOptionKeys.APP_NAME_KEY, description("Application name", DEFAULT_APP_NAME))
-                .withRequiredArg();
-        parser.accepts(MonitorOptionKeys.PORT,
-                description("Set port to listen on", "80"))
-                .withRequiredArg();
-
-        OptionSet options;
-        try {
-            options = parser.parse(args);
-        } catch (OptionException ex) {
-            System.out.println("error: " + ex.getMessage());
-            System.out.println();
-            parser.printHelpOn(System.out);
-            System.exit(EXIT_FAILURE);
-            return;
-        }
-        MonitorEnvironment environment = getEnvironment(options);
-
-        // need to call that before BisqAppMain().execute(args)
-        BisqExecutable.initAppDir(environment.getProperty(AppOptionKeys.APP_DATA_DIR_KEY));
-
-        // For some reason the JavaFX launch process results in us losing the thread context class loader: reset it.
-        // In order to work around a bug in JavaFX 8u25 and below, you must include the following code as the first line of your realMain method:
-        Thread.currentThread().setContextClassLoader(MonitorMain.class.getClassLoader());
-
-
-        String port = environment.getProperty(MonitorOptionKeys.PORT);
-
-        port(Integer.parseInt(port));
-        get("/", (req, res) -> {
-            log.info("Incoming request from: " + req.userAgent());
-            return seedNodeMonitor.getMetricsModel().getResultAsHtml();
-        });
-
-        new MonitorMain().execute(args);
+        log.info("Monitor.VERSION: " + VERSION);
+        BisqEnvironment.setDefaultAppName("bisq_monitor");
+        if (BisqExecutable.setupInitialOptionParser(args))
+            new MonitorMain().execute(args);
     }
 
-    public static MonitorEnvironment getEnvironment(OptionSet options) {
-        return new MonitorEnvironment(checkNotNull(options));
+    @Override
+    protected void doExecute(OptionSet options) {
+        super.doExecute(options);
+
+        CommonSetup.setup(this);
+        checkMemory(bisqEnvironment, this);
+
+        startHttpServer(bisqEnvironment.getProperty(MonitorOptionKeys.PORT));
+
+        keepRunning();
+    }
+
+    @Override
+    protected void setupEnvironment(OptionSet options) {
+        bisqEnvironment = new MonitorEnvironment(checkNotNull(options));
+    }
+
+    @Override
+    protected void launchApplication() {
+        UserThread.execute(() -> {
+            try {
+                monitor = new Monitor();
+                UserThread.execute(this::onApplicationLaunched);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @Override
+    protected void onApplicationLaunched() {
+        super.onApplicationLaunched();
+    }
+
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // We continue with a series of synchronous execution tasks
+    ///////////////////////////////////////////////////////////////////////////////////////////
+
+    @Override
+    protected AppModule getModule() {
+        return new MonitorModule(bisqEnvironment);
+    }
+
+    @Override
+    protected void applyInjector() {
+        super.applyInjector();
+
+        monitor.setInjector(injector);
+    }
+
+    @Override
+    protected void startApplication() {
+        monitor.startApplication();
+    }
+
+    private void startHttpServer(String port) {
+        port(Integer.parseInt(port));
+        Spark.get("/", (req, res) -> {
+            log.info("Incoming request from: " + req.userAgent());
+            final String resultAsHtml = monitor.getMetricsModel().getResultAsHtml();
+            return resultAsHtml == null ? "Still starting up..." : resultAsHtml;
+        });
     }
 
     @Override
@@ -138,93 +130,5 @@ public class MonitorMain extends BisqExecutable {
         parser.accepts(MonitorOptionKeys.PORT,
                 description("Set port to listen on", "80"))
                 .withRequiredArg();
-    }
-
-    @SuppressWarnings("InfiniteLoopStatement")
-    @Override
-    protected void doExecute(OptionSet options) {
-        final MonitorEnvironment environment = getEnvironment(options);
-        Monitor.setMonitorEnvironment(environment);
-
-        UserThread.execute(() -> {
-            try {
-                seedNodeMonitor = new Monitor();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-
-        Thread.UncaughtExceptionHandler handler = (thread, throwable) -> {
-            if (throwable.getCause() != null && throwable.getCause().getCause() != null &&
-                    throwable.getCause().getCause() instanceof BlockStoreException) {
-                log.error(throwable.getMessage());
-            } else {
-                log.error("Uncaught Exception from thread " + Thread.currentThread().getName());
-                log.error("throwableMessage= " + throwable.getMessage());
-                log.error("throwableClass= " + throwable.getClass());
-                log.error("Stack trace:\n" + ExceptionUtils.getStackTrace(throwable));
-                throwable.printStackTrace();
-                log.error("We shut down the app because an unhandled error occurred");
-                // We don't use the restart as in case of OutOfMemory errors the restart might fail as well
-                // The run loop will restart the node anyway...
-                System.exit(EXIT_FAILURE);
-            }
-        };
-        Thread.setDefaultUncaughtExceptionHandler(handler);
-        Thread.currentThread().setUncaughtExceptionHandler(handler);
-
-        String maxMemoryOption = environment.getProperty(AppOptionKeys.MAX_MEMORY);
-        if (maxMemoryOption != null && !maxMemoryOption.isEmpty()) {
-            try {
-                maxMemory = Integer.parseInt(maxMemoryOption);
-            } catch (Throwable t) {
-                log.error(t.getMessage());
-            }
-        }
-
-        UserThread.runPeriodically(() -> {
-            Profiler.printSystemLoad(log);
-            if (!stopped) {
-                long usedMemoryInMB = Profiler.getUsedMemoryInMB();
-                if (usedMemoryInMB > (maxMemory * 0.8)) {
-                    log.warn("\n\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n" +
-                                    "We are over our memory warn limit and call the GC. usedMemoryInMB: {}" +
-                                    "\n%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n\n",
-                            usedMemoryInMB);
-                    System.gc();
-                    Profiler.printSystemLoad(log);
-                }
-
-                UserThread.runAfter(() -> {
-                    if (Profiler.getUsedMemoryInMB() > maxMemory)
-                        restart(environment);
-                }, 5);
-            }
-        }, CHECK_MEMORY_PERIOD_SEC);
-
-        while (true) {
-            try {
-                Thread.sleep(Long.MAX_VALUE);
-            } catch (InterruptedException ignore) {
-            }
-        }
-    }
-
-    private void restart(BisqEnvironment bisqEnvironment) {
-        stopped = true;
-        seedNodeMonitor.gracefulShutDown(() -> {
-            //noinspection finally
-            try {
-                final String[] tokens = bisqEnvironment.getAppDataDir().split("_");
-                String logPath = "error_" + (tokens.length > 1 ? tokens[tokens.length - 2] : "") + ".log";
-                RestartUtil.restartApplication(logPath);
-            } catch (IOException e) {
-                log.error(e.toString());
-                e.printStackTrace();
-            } finally {
-                log.warn("Shutdown complete");
-                System.exit(0);
-            }
-        });
     }
 }
