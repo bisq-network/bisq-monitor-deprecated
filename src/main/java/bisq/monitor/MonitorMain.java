@@ -71,7 +71,7 @@ public class MonitorMain extends ExecutableForAppWithP2p {
         UserThread.execute(() -> {
             try {
                 monitor = new Monitor();
-                onApplicationLaunched();
+                UserThread.execute(this::onApplicationLaunched);
             } catch (Exception e) {
                 e.printStackTrace();
             }
