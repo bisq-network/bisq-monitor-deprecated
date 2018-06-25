@@ -179,13 +179,13 @@ class MonitorRequestHandler implements MessageListener {
     ///////////////////////////////////////////////////////////////////////////////////////////
 
     @Override
-    public void onMessage(NetworkEnvelope networkEnvelop, Connection connection) {
-        if (networkEnvelop instanceof GetDataResponse &&
+    public void onMessage(NetworkEnvelope networkEnvelope, Connection connection) {
+        if (networkEnvelope instanceof GetDataResponse &&
                 connection.getPeersNodeAddressOptional().isPresent() &&
                 connection.getPeersNodeAddressOptional().get().equals(peersNodeAddress)) {
-            Log.traceCall(networkEnvelop.toString() + "\n\tconnection=" + connection);
+            Log.traceCall(networkEnvelope.toString() + "\n\tconnection=" + connection);
             if (!stopped) {
-                GetDataResponse getDataResponse = (GetDataResponse) networkEnvelop;
+                GetDataResponse getDataResponse = (GetDataResponse) networkEnvelope;
                 if (getDataResponse.getRequestNonce() == nonce) {
                     stopTimeoutTimer();
 
@@ -194,7 +194,7 @@ class MonitorRequestHandler implements MessageListener {
                     dataSet.stream().forEach(e -> {
                         final ProtectedStoragePayload protectedStoragePayload = e.getProtectedStoragePayload();
                         if (protectedStoragePayload == null) {
-                            log.warn("StoragePayload was null: {}", networkEnvelop.toString());
+                            log.warn("StoragePayload was null: {}", networkEnvelope.toString());
                             return;
                         }
 
