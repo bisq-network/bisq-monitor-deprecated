@@ -112,7 +112,7 @@ class MonitorRequestHandler implements MessageListener {
         peersNodeAddress = nodeAddress;
         requestTs = new Date().getTime();
         if (!stopped) {
-            Set<byte[]> excludedKeys = dataStorage.getPersistableNetworkPayloadList().getMap().entrySet().stream()
+            Set<byte[]> excludedKeys = dataStorage.getAppendOnlyDataStoreMap().entrySet().stream()
                     .map(e -> e.getKey().bytes)
                     .collect(Collectors.toSet());
 

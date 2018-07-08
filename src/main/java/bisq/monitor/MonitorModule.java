@@ -20,7 +20,7 @@ package bisq.monitor;
 import bisq.monitor.metrics.p2p.MonitorP2PModule;
 
 import bisq.core.app.BisqEnvironment;
-import bisq.core.app.ModuleForAppWithP2p;
+import bisq.core.app.misc.ModuleForAppWithP2p;
 
 import bisq.network.p2p.P2PModule;
 
